@@ -37,16 +37,21 @@ class ElevenLabsAPI:
         else:
             raise Exception(response.json()['detail']['message'])
 
-    def generate_voice(self, text, character, filename, stability=0.2, clarity=0.1):
+    def generate_voice(self, text, character, filename, stability=0.2, clarity=0.1, voice_id=None):
         '''Generate a voice'''
-        if character not in self.voices:
-            print(character, 'is not in the array of characters: ', list(self.voices.keys()))
-
-        voice_id = self.voices[character]
+        # If voice_id is provided directly, use it
+        if voice_id:
+            pass  # use the provided voice_id
+        elif character in self.voices:
+            voice_id = self.voices[character]
+        else:
+            # Assume character is a voice_id if not found in voices list
+            print(f"'{character}' not found in voices list, using as voice_id directly")
+            voice_id = character
         url = f'{self.url_base}text-to-speech/{voice_id}/stream'
         headers = {'accept': '*/*', 'xi-api-key': self.api_key, 'Content-Type': 'application/json'}
         data = json.dumps(
-            {"model_id": "eleven_multilingual_v2", "text": text, "stability": stability, "similarity_boost": clarity})
+            {"model_id": "eleven_v3", "text": text, "stability": stability, "similarity_boost": clarity})
         response = requests.post(url, headers=headers, data=data)
 
         if response.status_code == 200:

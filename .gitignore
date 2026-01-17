@@ -1,4 +1,23 @@
-.idea
-.venv
+# API Keys (sensitive)
+api_keys.txt
 evenlab_key.txt
+current_key_index.txt
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# Output files
+output/
 *.mp3
+
+# Temp files
+script.txt
+*.txt
+!requirements.txt
+
+# IDE
+.vscode/
+.idea/
